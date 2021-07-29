@@ -121,7 +121,7 @@ $\hat{y}_{\ne i}(b)$ adalah nilai dugaan $y_{i}$ pada observasi di lokasi ke-$i$
 
 # Persiapan Data
 
-Pada tulisan ini akan digunakan metode regresi terboboti geografis pada data tingkat kriminalitas yang di pulau Jawa. Data ini merupakan kumpulan data yang berasal dari publikasi Badan Pusat Statistik (BPS) untuk tahun 2018 dari 6 provinsi yaitu Banten[^7], Jawa Barat[^11], DKI Jakarta[^8][^9], Jawa Tengah[^13], DI Yogyakarta[^10] dan Jawa Timur[^12]. Pemilihan variabel-variabel prediktor yang digunakan berdasarkan penelitian yang dilakukan oleh Mastuti (2018)[^3]. 
+Pada tulisan ini akan digunakan metode regresi terboboti geografis pada data tingkat kriminalitas yang di pulau Jawa. Data ini merupakan kumpulan data yang berasal dari publikasi Badan Pusat Statistik (BPS) untuk tahun 2018 dari 6 provinsi yaitu Banten[^7], Jawa Barat[^11], DKI Jakarta[^8][^9], Jawa Tengah[^13], DI Yogyakarta[^10] dan Jawa Timur[^12]. Pemilihan variabel-variabel prediktor yang digunakan berdasarkan penelitian yang dilakukan oleh Putra (2019)[^3]. 
 
 ![](Crime.png)
 
@@ -1038,8 +1038,7 @@ Terdapat beberapa macam fungsi kernel lain yang bisa digunakan untuk melakukan a
 
 [^2]: [https://algotech.netlify.app/blog/creating-choropleth-with-mapshaper-and-r/]()
 
-[^3]: [Mastuti WC. 2016. Pemodelan Regresi Kekar Terboboti Geografis 
-(Studi Kasus : Kriminalitas Jawa Timur Tahun 2016) [skripsi]. Bogor (ID): Institut Pertanian Bogor.]()
+[^3]: [Zikalta P. 2019. Model Regresi Terboboti Geografis Temporal Kekar untuk Tingkat Kriminalitas di Provinsi Jawa Tengah dan Provinsi Jawa Timur.  [tesis]. Bogor (ID): Institut Pertanian Bogor.]()
 
 [^5]: [https://anatomisebiostats.com/biostatistics-blog/simpsons-paradox-hidden-bias/]()
 

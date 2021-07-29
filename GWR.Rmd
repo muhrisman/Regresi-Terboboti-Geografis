@@ -1,22 +1,28 @@
 ---
 title: "Regresi Terboboti Geografis Dengan Fungsi Pembobot Kernel Gaussian"
 author: "Muhamad Risman"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: 
+date: "`r format(Sys.Date(), '%B %e, %Y')`"
+output:
   html_document:
-    toc: true
-    toc_depth: 2
-    toc_float: 
-        collapsed: false
-    number_sections: true
-    theme: readable
-    highlight: zenburn
-    css: style.css
-  fig_caption: yes
+    code_folding: hide
+    df_print: paged
+    highlight: tango
+    theme: cosmo
+    toc: yes
+    toc_float:
+      collapsed: no
+    number_sections: yes
+    always_allow_html: yes
+  word_document:
+    toc: yes
   pdf_document:
-    latex_engine: xelatex
-    fig_caption: yes
+    toc: yes
 ---
+
+<style>
+body{
+text-align: justify}
+</style>
 
 # Latar Belakang
 
@@ -115,7 +121,7 @@ $\hat{y}_{\ne i}(b)$ adalah nilai dugaan $y_{i}$ pada observasi di lokasi ke-$i$
 
 # Persiapan Data
 
-Pada tulisan ini akan digunakan metode regresi terboboti geografis pada data tingkat kriminalitas yang di pulau Jawa. Data ini merupakan kumpulan data yang berasal dari publikasi Badan Pusat Statistik (BPS) untuk tahun 2018 dari 6 provinsi yaitu Banten[^7], Jawa Barat[^11], DKI Jakarta[^8][^9], Jawa Tengah[^13], DI Yogyakarta[^10] dan Jawa Timur[^12]. 
+Pada tulisan ini akan digunakan metode regresi terboboti geografis pada data tingkat kriminalitas yang di pulau Jawa. Data ini merupakan kumpulan data yang berasal dari publikasi Badan Pusat Statistik (BPS) untuk tahun 2018 dari 6 provinsi yaitu Banten[^7], Jawa Barat[^11], DKI Jakarta[^8][^9], Jawa Tengah[^13], DI Yogyakarta[^10] dan Jawa Timur[^12]. Pemilihan variabel-variabel prediktor yang digunakan berdasarkan penelitian yang dilakukan oleh Mastuti (2018)[^3]. 
 
 ![](Crime.png)
 
@@ -185,7 +191,7 @@ data_pulau_jawa <- jawa_sf %>%
 
 ```
 
-Untuk menurunkan ukuran file yang terlalu besar, bisa dilakukan cara berikut:
+Karena peta yang dihasilkan pada setiap visualisasinya bersifat interaktif, ukuran file yang dihasilkan akan besar sehingga untuk efisiensi memori bisa dilakukan pengecilan ukuran file sebagai berikut:
 
 ```{r message=FALSE, warning=FALSE}
 
@@ -615,7 +621,7 @@ mytext_kp_sig <- paste(
   
   gwr_clean$TYPE_2," ", gwr_clean$NAME_2, "<br/>",
   "Provinsi ", gwr_clean$Provinsi, "<br/>",
-  "Signifikansi P-Value 5% : "," ", gwr_clean$sig_kp_5, "<br/>",
+  "Signifikansi Variabel 5% : "," ", gwr_clean$sig_kp_5, "<br/>",
   sep = "") %>% 
   lapply(htmltools::HTML)
 ```
@@ -641,7 +647,7 @@ peta_koef_kp_sig <- leaflet(gwr_clean) %>%
   addLegend("bottomleft", 
             pal = mypalette_kp_sig,
             values = ~ gwr_clean$KP_p,
-            title = "Signifikansi P-Value",
+            title = "Signifikansi Variabel",
             labFormat = labelFormat(),
             opacity = 1)
 
@@ -670,7 +676,7 @@ mytext_pdrb_sig <- paste(
   
   gwr_clean$TYPE_2," ", gwr_clean$NAME_2, "<br/>",
   "Provinsi ", gwr_clean$Provinsi, "<br/>",
-  "Signifikansi P-Value 5% : "," ", gwr_clean$sig_pdrb, "<br/>",
+  "Signifikansi Variabel 5% : "," ", gwr_clean$sig_pdrb, "<br/>",
   sep = "") %>% 
   lapply(htmltools::HTML)
 
@@ -698,7 +704,7 @@ peta_pdrb_sig <- leaflet(gwr_clean) %>%
   addLegend("bottomleft", 
             pal = mypalette_pdrb_sig,
             values = ~ gwr_clean$PDRB_p,
-            title = "Signifikansi P-Value",
+            title = "Signifikansi Variabel",
             labFormat = labelFormat(),
             opacity = 1)
 
@@ -904,7 +910,7 @@ Peta tersebut memperlihatkan pemetaan berdasarkan anggota klaster masing-masing.
 
 ## Penentuan Klaster Optimum Berdasarkan Signifikansi Variabel
 
-Selain menggunakan koefisien setiap variabel prediktor, analisis dapat juga dilakukan menggunakan signifikansi p-value antar variabel prediktor. Seperti halnya pada pengklasteran menggunakan koefisien antar variabel, akan juga dilakukan penentuan klaster optimum berdasarkan signifikansi antar variabel prediktor.
+Selain menggunakan koefisien setiap variabel prediktor, analisis dapat juga dilakukan menggunakan signifikansi variabel prediktor. Seperti halnya pada pengklasteran menggunakan koefisien antar variabel, akan juga dilakukan penentuan klaster optimum berdasarkan signifikansi antar variabel prediktor.
 
 ```{r}
 
@@ -1031,6 +1037,9 @@ Terdapat beberapa macam fungsi kernel lain yang bisa digunakan untuk melakukan a
 (UK): John Wiley and Sons LTD.]()
 
 [^2]: [https://algotech.netlify.app/blog/creating-choropleth-with-mapshaper-and-r/]()
+
+[^3]: [Mastuti WC. 2016. Pemodelan Regresi Kekar Terboboti Geografis 
+(Studi Kasus : Kriminalitas Jawa Timur Tahun 2016) [skripsi]. Bogor (ID): Institut Pertanian Bogor.]()
 
 [^5]: [https://anatomisebiostats.com/biostatistics-blog/simpsons-paradox-hidden-bias/]()
 

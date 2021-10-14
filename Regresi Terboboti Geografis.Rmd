@@ -1,34 +1,46 @@
 ---
-title: "Regresi Terboboti Geografis Dengan Fungsi Pembobot Kernel Gaussian"
-author: "Muhamad Risman"
-date: "`r format(Sys.Date(), '%B %e, %Y')`"
-output:
-  html_document:
-    code_folding: hide
-    df_print: paged
-    highlight: tango
-    theme: cosmo
-    toc: yes
-    toc_float:
-      collapsed: no
-    number_sections: yes
-    always_allow_html: yes
-  word_document:
-    toc: yes
-  pdf_document:
-    toc: yes
+title: Pendekatan Regresi Terboboti Spasial untuk Analisa Tingkat Kriminalitas di Pulau Jawa
+author: Muhamad Risman
+github: https://github.com/muhrisman
+date: '2021-10-11'
+slug: regresi-terboboti-geografis
+categories:
+  - R
+tags: 
+  - Mapshaper
+  - Leaflet
+  - Map
+  - Machine Learning
+  - Regression
+  - Spatial Analysis
+description: ''
+featured: ''
+featuredalt: ''
+featuredpath: ''
+linktitle: ''
+type: post
 ---
 
-<style>
-body{
-text-align: justify}
-</style>
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# clean up the environment
+rm(list = ls())
+
+# setup chunk options
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  comment = "#>"
+)
+```
 
 # Latar Belakang
 
 Analisis regresi adalah satu metode machine learning yang bertujuan untuk memprediksi target variabel berdasarkan variabel-variabel pendukung sesuai dengan kajian-kajian yang mendasarinya. Analisis regresi cukup populer dan banyak diaplikasikan pada banyak disiplin ilmu mulai dari kajian dalam ruang lingkup ekonomi dan bisnis hingga fenomena sehari-hari.
 
-Salah satu kajian dalam analisis regresi adalah dengan mempertimbangkan data spasial. Berbeda dengan pemodelan analisis regresi pada umumnya, pemodelan dengan menggunakan data spasial mempertimbangkan aspek kewilayahan yang memberikan pengaruh lingkungan dan karakteristik yang muncul dari suatu wilayah.
+Salah satu kajian dalam analisis regresi adalah dengan mempertimbangkan data spasial. Model regresi spasial dapat melakukan eksplorasi suatu kasus yang berhubungan dengan aspek kewilayahan. Contohnya kasus kelahiran balita di suatu wilayah, kasus tindak pidana di provinsi A, kasus penyebaran penyakit di wilayah yang berdekatan dll. Berbeda dengan pemodelan analisis regresi pada umumnya, pemodelan dengan menggunakan data spasial mempertimbangkan aspek kewilayahan yang memberikan pengaruh lingkungan dan karakteristik yang muncul dari suatu wilayah.
 
 Data spasial adalah data cross-section yang memiliki struktur geografis berupa longitude dan latitude dan dapat divisualisasikan dalam bentuk peta. Berdasarkan Hukum I Tobler, setiap hal memiliki keterkaitan dengan hal lainnya namun yang lebih berdekatan memiliki keterkaitan yang lebih dari lainnya [^6]. Hukum ini mendasari pemodelan data spasial yang mempertimbangkan aspek kewilayahan yang berdekatan.
 
@@ -37,15 +49,14 @@ Data spasial adalah data cross-section yang memiliki struktur geografis berupa l
 Regresi Terboboti Geografis (RTG) adalah metode yang dapat digunakan untuk menganalisis aspek heterogenitas spasial antar variabel. Model regresi terboboti geografis berangkat dari model regresi linear klasik dengan melibatkan hubungan antar variabel berdasarkan aspek ruang. Model yang dihasilkan menggunakan regresi linear klasik merupakan model global yang berarti pendugaan parameter yang dihasilkan berlaku untuk seluruh observasi.
 Regresi linear klasik dengan Ordinary Least Square (OLS) tidak mempertimbangkan aspek ruang atau efek spasial yang timbul. Hal ini dapat mengakibatkan interpretasi yang keliru terhadap model yang dihasilkan. Simpson's Paradox adalah salah satu fenomena yang muncul pada kasus statistik yang dapat mengakibatkan kekeliruan pengambilan kesimpulan[^5]. Fenomena ini terjadi ketika suatu group data yang dianalisis antara secara terpisah dan secara penggabungan memiliki hasil yang kontradiktif.
 
-![](Simpson's Paradox.gif)
+<center> ![](/img/GWR/a.gif) </center>`
 
 [Sumber Gambar](https://anatomisebiostats.com/biostatistics-blog/simpsons-paradox-hidden-bias/)
 
 Dalam pemodelan kasus regresi linear klasik yang melibatkan ruang, model yang dihasilkan dapat berhadapan dengan Simpson's Paradox karena bersinggungan dengan data yang melalui agregasi. Setiap observasi dalam pemodelan regresi yang melibatkan ruang memiliki kemungkinan menghasilkan pendugaan parameter yang berbeda ketika pemodelan yang dilakukan bersifat global.
 Regresi terboboti geografis dapat menangani permasalahan yang muncul akibat misinterpretasi saat melakukan pemodelan regresi linear klasik karena adanya keragaman spasial dalam data[^1]. Output yang muncul pada pemodelan regresi terboboti spasial adalah setiap observasi yang berbasis ruang memiliki model regresi masing-masing.
 
-![](gwr.PNG)
-
+<center> ![](/img/GWR/gwr.PNG) </center>
 
 Model regresi global dapat dinyatakan sebagai berikut:
 
@@ -107,9 +118,7 @@ $w_{ij} = exp \ [\frac{-1}{2}(\frac{d_{ij}}{b})^2]$
 
 $d_{ij}$ adalah jarak antara dua lokasi yaitu $i$ dan $j$ dan $b$ adalah lebar jendela (bandwidth). Bandwidth dapat dianalogikan sebagai suatu titik dalam lingkaran yang memiliki efek mempengaruhi area sekitar yang masih berada dalam area tersebut. Hal ini mempengaruhi pendugaan parameternya di lokasi ke-$i$. Bandwith terbagi menjadi dua yaitu memiliki efek sama pada setiap lokasi pengamatan (fixed) dan berbeda pada setiap lokasi pengamatan (adaptif).
 
-
-![](bandwidth.PNG)
-
+<center> ![](/img/GWR/bandwidth.PNG) </center>
 
 Metode yang dapat digunakan untuk menentukan nilai bandwidth optimum adalah dengan menggunakan validasi silang (Cross Validation). Adapun persamaan untuk mendapatkan CV adalah sebagai berikut:
 
@@ -123,7 +132,7 @@ $\hat{y}_{\ne i}(b)$ adalah nilai dugaan $y_{i}$ pada observasi di lokasi ke-$i$
 
 Pada tulisan ini akan digunakan metode regresi terboboti geografis pada data tingkat kriminalitas yang di pulau Jawa. Data ini merupakan kumpulan data yang berasal dari publikasi Badan Pusat Statistik (BPS) untuk tahun 2018 dari 6 provinsi yaitu Banten[^7], Jawa Barat[^11], DKI Jakarta[^8][^9], Jawa Tengah[^13], DI Yogyakarta[^10] dan Jawa Timur[^12]. Pemilihan variabel-variabel prediktor yang digunakan berdasarkan penelitian yang dilakukan oleh Putra (2019)[^3]. 
 
-![](Crime.png)
+<center> ![](/img/GWR/crime.PNG) </center>
 
 ```{r message=FALSE, warning=FALSE}
 
@@ -141,7 +150,7 @@ library(htmlwidgets)
 
 
 ```{r}
-Data_Tingkat_Kriminalitas <- read.csv("Data Risiko Kejatahan Jawa.csv")
+Data_Tingkat_Kriminalitas <- read.csv("data_input/GWR/Data Risiko Kejatahan Jawa.csv")
 
 glimpse(Data_Tingkat_Kriminalitas)
 ```
@@ -165,7 +174,7 @@ Hal pertama yang harus disiapkan adalah menyiapkan file dalam bentuk peta daerah
 
 
 ```{r}
-Pulau_Jawa <- readOGR(dsn = "Pulau_Jawa", layer = "Pulau_Jawa")
+Pulau_Jawa <- readOGR(dsn = "data_input/Pulau_Jawa", layer = "Pulau_Jawa")
 
 ```
 
@@ -304,7 +313,7 @@ Data_Tingkat_Kriminalitas %>%
     ylab("Tingkat Kriminalitas 2018 per 100,000 penduduk")
 ```
 
-Provinsi DKI Jakarta memiliki tingkat kriminalitas tertinggi dibanding provinsi lain. Pada tingkat kabupaten/kota non DKI Jakarta, kota Cilegon memiliki tingkat kriminalitas 2018 cukup ekstrim dibanding kabupaten/kota non DKI Jakarta. Di Provinsi Jawa Timur, Kota Blitar dan Kota Madiun memiliki tingkat kriminalitas di atas 500 dan merupakan 2 daerah dengan tingkat kriminalitas tertinggi di Jawa Timur.
+Interpretasi untuk tingkat kriminalitas di pulau Jawa adalah Provinsi DKI Jakarta memiliki tingkat kriminalitas tertinggi dibanding provinsi lain. Pada tingkat kabupaten/kota non DKI Jakarta, kota Cilegon memiliki tingkat kriminalitas 2018 cukup ekstrim dibanding kabupaten/kota non DKI Jakarta. Di Provinsi Jawa Timur, Kota Blitar dan Kota Madiun memiliki tingkat kriminalitas di atas 500 dan merupakan 2 daerah dengan tingkat kriminalitas tertinggi di Jawa Timur.
 
 
 ## Hubungan antar variabel
